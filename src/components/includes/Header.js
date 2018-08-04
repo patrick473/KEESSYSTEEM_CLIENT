@@ -12,7 +12,7 @@ class Header extends Component {
         return (
             <nav>
                 <div className="nav-wrapper amber darken-2 ">
-                    <a  class="brand-logo center black-text "><b>Reactify</b></a>
+                    <a  className="brand-logo center black-text "><b>Reactify</b></a>
                 </div>
             </nav>
         );

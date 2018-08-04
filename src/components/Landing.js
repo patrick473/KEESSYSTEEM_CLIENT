@@ -11,9 +11,13 @@ class Landing extends Component {
     render() {
         return (
             <div className="landing-box center-align">
-            <h1 className="">Reactify</h1>   
-            <a class="btn-large">Create a game</a>
-            <a class="btn-large">Join a game</a>
+            <h1 >Reactify</h1>   
+            <div className="row">
+            <Link to="/owner" className="btn-large amber darken-4 buttoncenter ">Create a game</Link>
+            </div>
+            <div className="row">
+            <Link to="/join" className="btn-large amber darken-4 buttoncenter">Join a game</Link>
+            </div>
             </div>
         );
     }

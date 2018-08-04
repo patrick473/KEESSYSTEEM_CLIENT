@@ -13,11 +13,9 @@ import io from 'socket.io-client';
 import App from './components/App';
 import reducers from './reducers/index';
 
-
 const store = createStore(reducers, {});
 
-const socket = io('/api/io');
-console.log(socket);
+
 ReactDOM.render(
     <Provider store={store}><App /></Provider>,
      document.getElementById('root'));
