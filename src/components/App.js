@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Helmet from 'react-helmet';
 import Landing from './Landing';
+import Owner from './Owner';
 import Header from './includes/Header';
 
 class App extends Component {
@@ -15,7 +16,7 @@ class App extends Component {
         <Header />
         <Switch>
         <Route exact path="/" component={Landing} />
-       
+        <Route path="/owner" component={Owner} />
         </Switch>
       </div>
       </BrowserRouter>

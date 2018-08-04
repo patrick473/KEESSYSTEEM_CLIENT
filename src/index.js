@@ -13,7 +13,8 @@ import io from 'socket.io-client';
 import App from './components/App';
 import reducers from './reducers/index';
 
-const store = createStore(reducers, {});
+const store = createStore(reducers, {},);
+io('http://reactify-socketserver.herokuapp.com/');
 
 
 ReactDOM.render(

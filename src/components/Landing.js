@@ -10,7 +10,7 @@ function mapStateToProps(state) {
 class Landing extends Component {
     render() {
         return (
-            <div className="landing-box center-align">
+            <div className="center-box center-align">
             <h1 >Reactify</h1>   
             <div className="row">
             <Link to="/owner" className="btn-large amber darken-4 buttoncenter ">Create a game</Link>
