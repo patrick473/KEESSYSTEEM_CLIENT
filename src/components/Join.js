@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {Link} from 'react-router-dom';
-import io from 'socket.io-client';
+import {Link,Redirect} from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {joinGroup} from '../actions';
 
-import {createGroup} from '../actions';
 
 function mapStateToProps(state) {
     return state;
@@ -13,36 +14,57 @@ function mapStateToProps(state) {
 class Join extends Component {
     constructor(props){
         super(props);
-        this.state = {accessCode:''};
+        this.state = {accessCode:'',redirect:false};
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleChange(event){
-        this.setState({value: event.target.value});
+        this.setState({accessCode: event.target.value});
     }
     handleSubmit(event){
-        alert('accecscode submitted: '+this.state.value);
+        this.props.socket.emit('joinGroup',this.state.accessCode);
         event.preventDefault();
     }
     componentDidMount(){
        
-      
+      this.props.socket.on('joinGroup', (data)=>{
+        this.setState({redirect:true});
+        this.props.joinGroup(data);
+      });
+      this.props.socket.on('joinGroupFailed', (message)=>{
+        toast(message);
+      });
+    }
+    redirectFunction(){
+        if(this.state.redirect){
+            return <Redirect to="/ingame"/>
+        }
+        
     }
     render() {
        
+      
+
         return (
             <div className="center-box center-align">
-            <h1>You can join a room by using the accesscode provided by the owner.</h1>
+            <ToastContainer/>
+            <h1>Join a room by using <br/>a given accesscode</h1>
             <form onSubmit={this.handleSubmit}>
-            <input type="text" placeholder="accesscode" value={this.state.value} onChange={this.handleChange}/>
-            <input type="submit" value="submit"/>
+            <div className="container" >
+            <input type="text" maxLength="4" style={{fontSize: 50,width:'50%',padding:20}} placeholder="code" value={this.state.value} onChange={this.handleChange}/>
+            <br/>
+            
+            <input type="submit" className="btn" value="submit"/>
+            </div>
             </form>
-            <Link to="/" > Go Back </Link>
+            <Link to="/"> Go Back </Link>
+         
+            {this.redirectFunction()}
             </div>
         );
     }
 }
 
 export default connect(
-    mapStateToProps,{createGroup}
+    mapStateToProps,{joinGroup}
 )(Join);

@@ -4,9 +4,10 @@ import Helmet from 'react-helmet';
 import Landing from './Landing';
 import Owner from './Owner';
 import Join from './Join';
+import Ingame from './Ingame';
 import Header from './includes/Header';
 import io from 'socket.io-client';
-const socket = io('http://reactify-socketserver.herokuapp.com/');
+const socket = io('reactify-socketserver.herokuapp.com');
 
 function OwnerPage(){
   return  <Owner socket={socket}/>
@@ -15,12 +16,15 @@ function OwnerPage(){
 function JoinPage(){
   return <Join socket={socket}/>
 }
+function IngamePage(){
+  return <Ingame socket={socket}/>
+}
 class App extends Component {
    
   render() {
    
     return (
-      <div>
+      <div className="height100">
       <Helmet bodyAttributes={{style: 'background-color : #fff3e0'}}/>
       <BrowserRouter>
       <div >
@@ -29,6 +33,7 @@ class App extends Component {
         <Route exact path="/" component={Landing} />
         <Route path="/owner" component={OwnerPage} />
         <Route path="/join" component={JoinPage}/>
+        <Route path="/ingame" component={IngamePage}/>
         </Switch>
       </div>
       </BrowserRouter>
