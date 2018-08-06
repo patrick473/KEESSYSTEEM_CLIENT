@@ -5,23 +5,40 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 function mapStateToProps(state) {
-    return state;
+    return {
+        group: state.group
+        
+    };
 }
 
 
-class Join extends Component {
+class Ingame extends Component {
     constructor(props){
         super(props);
         this.state = {playing:'waiting'};
-        
+        this.handleReaction = this.handleReaction.bind(this);
     }
     
     componentDidMount(){
-       this.props.socket.on('startGame', (data)=>{
+        const {socket} = this.props;
+       socket.on('startGame', (data)=>{
            this.setState({playing:'ingame'})
-       })
+       });
+      socket.on('reactGame',(data)=>{
+           this.setState({playing:'reacting'})
+       });
+       socket.on('reactSuccess',(data)=>{
+        this.setState({playing:'ingame'})
+    });
+    socket.on('stopGame',(data)=>{
+        this.setState({playing:'waiting'});
+    })
      
     }
+    handleReaction(){
+        this.props.socket.emit('reactGame',this.props.group._id);
+    }
+
     render() {
         
         switch (this.state.playing) {
@@ -41,7 +58,7 @@ class Join extends Component {
             );
             case 'reacting':
             return(
-                <div className="big-white-div"></div>
+                <div className="big-white-div" onClick={this.handleReaction}></div>
             )
                 
         
@@ -56,4 +73,4 @@ class Join extends Component {
 
 export default connect(
     mapStateToProps,{}
-)(Join);
+)(Ingame);

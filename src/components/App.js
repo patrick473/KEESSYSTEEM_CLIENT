@@ -7,8 +7,9 @@ import Join from './Join';
 import Ingame from './Ingame';
 import Header from './includes/Header';
 import io from 'socket.io-client';
-const socket = io('reactify-socketserver.herokuapp.com');
 
+//const socket = io('reactify-socketserver.herokuapp.com');
+const socket = io('localhost:5000');
 function OwnerPage(){
   return  <Owner socket={socket}/>
   

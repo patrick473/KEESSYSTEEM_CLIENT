@@ -36,6 +36,9 @@ class Owner extends Component {
             toast(message);
             this.setState({ingame:true});
         });
+        socket.on('startGameFailed', (message)=>{
+            toast(message);
+        });
         socket.on('stopGame',(message)=>{
             toast(message);
             this.setState({ingame:false});
@@ -43,18 +46,24 @@ class Owner extends Component {
     }
     renderCorrectButton(){
         if(!this.state.ingame){
-        return <button className="btn-large amber darken-4 buttoncenter " onClick={this.handleStart}>Start game</button>
-        }
+            if(this.state.users == 0){
+        return <button disabled className="btn-large amber darken-4 buttoncenter " onClick={this.handleStart}>Start game</button>
+            }
+            else{
+                return <button  className="btn-large amber darken-4 buttoncenter " onClick={this.handleStart}>Start game</button>
+          
+            }
+    }
         else{
             return <button className="btn-large amber darken-4 buttoncenter " onClick={this.handleStop}>Stop game</button>
         }
     }
     handleStart(){
         
-        this.socket.emit('startGame',this.props.group._id);
+        this.props.socket.emit('startGame',this.props.group._id);
     }
     handleStop(){
-        this.socket.emit('stopGame',this.props.group._id);
+        this.props.socket.emit('stopGame',this.props.group._id);
     }
     render() {
         const {accessCode} = this.props.group;
