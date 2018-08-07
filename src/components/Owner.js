@@ -46,7 +46,7 @@ class Owner extends Component {
     }
     renderCorrectButton(){
         if(!this.state.ingame){
-            if(this.state.users == 0){
+            if(this.state.users === 0){
         return <button disabled className="btn-large amber darken-4 buttoncenter " onClick={this.handleStart}>Start game</button>
             }
             else{
