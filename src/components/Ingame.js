@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
+import delay from 'delay';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -15,28 +16,45 @@ function mapStateToProps(state) {
 class Ingame extends Component {
     constructor(props){
         super(props);
-        this.state = {playing:'waiting'};
+        this.state = {playing:'waiting',delay:0};
         this.handleReaction = this.handleReaction.bind(this);
+        this.setStateToReacting = this.setStateToReacting.bind(this);
     }
     
-    componentDidMount(){
+     componentDidMount(){
         const {socket} = this.props;
        socket.on('startGame', (data)=>{
-           this.setState({playing:'ingame'})
+           this.setState({playing:'ingame',delay:data.delay})
+           console.log(this.state)
        });
       socket.on('reactGame',(data)=>{
-           this.setState({playing:'reacting'})
+           
+                delay(this.state.delay * 1000).then(()=>{
+                    
+                        this.setStateToReacting();
+                    
+                })
+              
+          
+           
+           
        });
        socket.on('reactSuccess',(data)=>{
-        this.setState({playing:'ingame'})
+        this.setState({playing:'ingame'});
     });
     socket.on('stopGame',(data)=>{
         this.setState({playing:'waiting'});
     })
      
     }
+    setStateToReacting(){
+        console.log('beep');
+        this.setState({playing:'reacting'})
+    }
     handleReaction(){
+       
         this.props.socket.emit('reactGame',this.props.group._id);
+        
     }
 
     render() {

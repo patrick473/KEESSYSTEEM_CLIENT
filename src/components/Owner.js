@@ -15,10 +15,11 @@ function mapStateToProps(state) {
 class Owner extends Component {
     constructor(props){
         super(props);
-        this.state = {users: 0, ingame:false};
+        this.state = {users: 0, ingame:false, delay:0};
 
         this.handleStart = this.handleStart.bind(this);
         this.handleStop = this.handleStop.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
     componentDidMount(){
        const {socket} = this.props;
@@ -59,11 +60,18 @@ class Owner extends Component {
         }
     }
     handleStart(){
-        
-        this.props.socket.emit('startGame',this.props.group._id);
+        const startObject ={
+            groupid:  this.props.group._id,
+            delay: this.state.delay
+        }
+        this.props.socket.emit('startGame',startObject);
     }
     handleStop(){
         this.props.socket.emit('stopGame',this.props.group._id);
+    }
+    handleChange(event){
+        this.setState({delay:event.target.value});
+        console.log(this.state.delay);
     }
     render() {
         const {accessCode} = this.props.group;
@@ -72,6 +80,8 @@ class Owner extends Component {
             <div className="center-box center-align">
             <ToastContainer/>
             <h1>People can join you at: {accessCode}</h1>
+            <label htmlFor="range">Delay: </label><input id="range" type="range" defaultValue={0} onChange={this.handleChange} style={{width:300}} min={0} max={20} step={0.5}/>
+            <h5>Delay in seconds: {this.state.delay}</h5>
             <p>Users in group:{this.state.users}</p>
             {this.renderCorrectButton()}
             <br/>
